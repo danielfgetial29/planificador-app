@@ -1,6 +1,7 @@
 /* Ancho fijo de cada columna */
 .columna {
   width: 300px;
+  min-height: 350px;
 }
 
 /* Preparado para el scroll horizontal futuro */
