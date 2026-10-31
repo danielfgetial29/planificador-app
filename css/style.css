@@ -1,0 +1,9 @@
+/* Ancho fijo de cada columna */
+.columna {
+  width: 300px;
+}
+
+/* Preparado para el scroll horizontal futuro */
+.tablero {
+  overflow-x: auto;
+}
