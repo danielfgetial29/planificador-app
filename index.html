@@ -54,6 +54,39 @@
               </button>
             </div>
           </section>
+
+          <!-- Columna de Progreso-->
+          <section
+            class="columna card bg-body-secondary border-0 rounded-4 flex-grow-1"
+          >
+            <div
+              class="card-header bg-transparent border-0 d-flex justify-content-between align-items-center"
+            >
+              <h2 class="h6 fw-semibold mb-0">
+                <span class="badge rounded-circle bg-primary p-1 me-2"></span>En
+                progreso
+              </h2>
+              <span
+                class="badge rounded-pill text-bg-light border"
+                data-contador="progreso"
+                >0</span
+              >
+            </div>
+            <div
+              class="card-body d-flex flex-column gap-2 py-0"
+              data-lista="progreso"
+            ></div>
+            <div class="card-footer bg-transparent border-0">
+              <button
+                class="btn btn-sm btn-link text-decoration-none text-secondary p-0"
+                data-bs-toggle="modal"
+                data-bs-target="#modalTarea"
+                data-estado="progreso"
+              >
+                + Añadir tarea
+              </button>
+            </div>
+          </section>
         </div>
       </div>
     </main>
