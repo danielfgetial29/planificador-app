@@ -85,6 +85,49 @@
                 <option value="completada">Completada</option>
               </select>
             </div>
+
+            <!-- Prioridad -->
+            <div class="col-12">
+              <span class="form-label small d-block mb-1">Prioridad</span>
+              <div class="d-flex gap-2">
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="prioridad"
+                  id="prioBaja"
+                  value="baja"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-success flex-fill" for="prioBaja"
+                  >Baja</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="prioridad"
+                  id="prioMedia"
+                  value="media"
+                  autocomplete="off"
+                  checked
+                />
+                <label class="btn btn-outline-warning flex-fill" for="prioMedia"
+                  >Media</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="prioridad"
+                  id="prioAlta"
+                  value="alta"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-danger flex-fill" for="prioAlta"
+                  >Alta</label
+                >
+              </div>
+            </div>
           </div>
         </div>
       </form>
