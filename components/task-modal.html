@@ -1,0 +1,150 @@
+<div
+  class="modal fade"
+  id="modalTarea"
+  tabindex="-1"
+  aria-labelledby="modalTareaTitulo"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0">
+      <form id="formTarea" novalidate>
+        <!--Encabezado de la tarea-->
+        <div class="modal-header border-0 pb-0">
+          <h2 class="modal-title h5" id="modalTareaTitulo">Nueva tarea</h2>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Cerrar"
+          ></button>
+        </div>
+
+        <!--Cuerpo del formulario-->
+        <div class="modal-body">
+          <div class="row g-3">
+            <!--Titulo de la tarea-->
+            <div class="col-12">
+              <label for="titulo" class="form-label small mb-1">Título</label>
+              <input
+                type="text"
+                class="form-control"
+                id="titulo"
+                name="titulo"
+                placeholder="Diseñar el login"
+                required
+                minlength="3"
+                maxlength="80"
+              />
+              <div class="invalid-feedback">
+                El título es obligatorio (mínimo 3 caracteres).
+              </div>
+            </div>
+
+            <!-- Descripción -->
+            <div class="col-12">
+              <label for="descripcion" class="form-label small mb-1"
+                >Descripción</label
+              >
+              <textarea
+                class="form-control"
+                id="descripcion"
+                name="descripcion"
+                rows="3"
+                maxlength="300"
+                placeholder="Qué hay que hacer y qué se espera al terminar"
+              ></textarea>
+              <div
+                class="d-flex justify-content-between small text-secondary mt-1"
+              >
+                <span>Opcional</span>
+                <span id="contadorDescripcion">0 / 300</span>
+              </div>
+            </div>
+
+            <!-- Fecha y estado -->
+            <div class="col-6">
+              <label for="fecha" class="form-label small mb-1"
+                >Fecha límite</label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="fecha"
+                name="fecha"
+                required
+              />
+              <div class="invalid-feedback">Elige una fecha.</div>
+            </div>
+
+            <!--Estados-->
+            <div class="col-6">
+              <label for="estado" class="form-label small mb-1">Estado</label>
+              <select class="form-select" id="estado" name="estado" required>
+                <option value="pendiente">Pendiente</option>
+                <option value="progreso">En progreso</option>
+                <option value="completada">Completada</option>
+              </select>
+            </div>
+
+            <!-- Prioridad -->
+            <div class="col-12">
+              <span class="form-label small d-block mb-1">Prioridad</span>
+              <div class="d-flex gap-2">
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="prioridad"
+                  id="prioBaja"
+                  value="baja"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-success flex-fill" for="prioBaja"
+                  >Baja</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="prioridad"
+                  id="prioMedia"
+                  value="media"
+                  autocomplete="off"
+                  checked
+                />
+                <label class="btn btn-outline-warning flex-fill" for="prioMedia"
+                  >Media</label
+                >
+
+                <input
+                  type="radio"
+                  class="btn-check"
+                  name="prioridad"
+                  id="prioAlta"
+                  value="alta"
+                  autocomplete="off"
+                />
+                <label class="btn btn-outline-danger flex-fill" for="prioAlta"
+                  >Alta</label
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Botones de guardar y cancelar-->
+        <div class="modal-footer justify-content-between">
+          <div class="d-flex gap-2 ms-auto">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">Guardar tarea</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
