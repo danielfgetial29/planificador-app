@@ -8,6 +8,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content rounded-4 border-0">
       <form id="formTarea" novalidate>
+        <!--Encabezado de la tarea-->
         <div class="modal-header border-0 pb-0">
           <h2 class="modal-title h5" id="modalTareaTitulo">Nueva tarea</h2>
           <button
@@ -16,6 +17,29 @@
             data-bs-dismiss="modal"
             aria-label="Cerrar"
           ></button>
+        </div>
+
+        <!--Cuerpo del formulario-->
+        <div class="modal-body">
+          <div class="row g-3">
+            <!--Titulo de la tarea-->
+            <div class="col-12">
+              <label for="titulo" class="form-label small mb-1">Título</label>
+              <input
+                type="text"
+                class="form-control"
+                id="titulo"
+                name="titulo"
+                placeholder="Diseñar el login"
+                required
+                minlength="3"
+                maxlength="80"
+              />
+              <div class="invalid-feedback">
+                El título es obligatorio (mínimo 3 caracteres).
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>
