@@ -28,4 +28,21 @@ function crearTarjeta(tarea) {
     </article>`;
 }
 
+function render() {
+  ESTADOS.forEach((estado) => {
+    const lista = document.querySelector(`[data-lista="${estado}"]`);
+    const delEstado = tareas.filter((t) => t.estado === estado);
+
+    lista.innerHTML = delEstado.length
+      ? delEstado.map(crearTarjeta).join("")
+      : '<p class="text-center text-secondary my-4">Sin tareas</p>';
+
+    document.querySelector(`[data-contador="${estado}"]`).textContent =
+      delEstado.length;
+  });
+
+  document.getElementById("contador-tareas").textContent =
+    `${tareas.length} ${tareas.length === 1 ? "tarea" : "tareas"}`;
+}
+
 function iniciarApp() {}
