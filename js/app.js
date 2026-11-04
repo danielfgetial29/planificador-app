@@ -45,4 +45,51 @@ function render() {
     `${tareas.length} ${tareas.length === 1 ? "tarea" : "tareas"}`;
 }
 
-function iniciarApp() {}
+function iniciarApp() {
+  const modalEl = document.getElementById("modalTarea");
+  const form = document.getElementById("formTarea");
+  const descripcion = document.getElementById("descripcion");
+  const contador = document.getElementById("contadorDescripcion");
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+
+  // Contador de caracteres
+  descripcion.addEventListener("input", () => {
+    contador.textContent = `${descripcion.value.length} / 300`;
+  });
+
+  // Al abrir: limpiar formulario y preseleccionar el estado del botón pulsado
+  modalEl.addEventListener("show.bs.modal", (e) => {
+    form.reset();
+    form.classList.remove("was-validated");
+    contador.textContent = "0 / 300";
+    form.estado.value = e.relatedTarget?.dataset.estado || "pendiente";
+  });
+
+  // Enfocar el título al terminar de abrir
+  modalEl.addEventListener("shown.bs.modal", () => form.titulo.focus());
+
+  // Guardar
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.classList.add("was-validated");
+      return;
+    }
+
+    tareas.push({
+      id: Date.now(),
+      titulo: form.titulo.value.trim(),
+      descripcion: form.descripcion.value.trim(),
+      fecha: form.fecha.value,
+      estado: form.estado.value,
+      prioridad: form.prioridad.value,
+    });
+
+    guardar();
+    render();
+    modal.hide();
+  });
+
+  render();
+}
