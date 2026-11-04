@@ -39,6 +39,27 @@
                 El título es obligatorio (mínimo 3 caracteres).
               </div>
             </div>
+
+            <!-- Descripción -->
+            <div class="col-12">
+              <label for="descripcion" class="form-label small mb-1"
+                >Descripción</label
+              >
+              <textarea
+                class="form-control"
+                id="descripcion"
+                name="descripcion"
+                rows="3"
+                maxlength="300"
+                placeholder="Qué hay que hacer y qué se espera al terminar"
+              ></textarea>
+              <div
+                class="d-flex justify-content-between small text-secondary mt-1"
+              >
+                <span>Opcional</span>
+                <span id="contadorDescripcion">0 / 300</span>
+              </div>
+            </div>
           </div>
         </div>
       </form>
