@@ -30,13 +30,13 @@
                 class="form-control"
                 id="titulo"
                 name="titulo"
-                placeholder="Diseñar el login"
+                placeholder="Tarea a realizar"
                 required
-                minlength="3"
+                minlength="9"
                 maxlength="80"
               />
               <div class="invalid-feedback">
-                El título es obligatorio (mínimo 3 caracteres).
+                El título es obligatorio (mínimo 9 caracteres).
               </div>
             </div>
 
@@ -50,14 +50,40 @@
                 id="descripcion"
                 name="descripcion"
                 rows="3"
+                required
+                minlength="16"
                 maxlength="300"
                 placeholder="Qué hay que hacer y qué se espera al terminar"
               ></textarea>
-              <div
-                class="d-flex justify-content-between small text-secondary mt-1"
-              >
-                <span>Opcional</span>
+
+              <div class="invalid-feedback">
+                La descripción es obligatorio (mínimo 16 caracteres).
+              </div>
+
+              <div class="d-flex justify-content-end small text-secondary mt-1">
                 <span id="contadorDescripcion">0 / 300</span>
+              </div>
+            </div>
+
+            <!-- Responsable de la tarea -->
+            <div class="col-12">
+              <label for="asignadoA" class="form-label small mb-1">
+                Asignado a
+              </label>
+
+              <input
+                type="text"
+                class="form-control"
+                id="asignadoA"
+                name="asignadoA"
+                placeholder="Nombre del responsable"
+                required
+                minlength="9"
+                maxlength="80"
+              />
+
+              <div class="invalid-feedback">
+                El responsable es obligatorio (mínimo 9 caracters)
               </div>
             </div>
 
@@ -80,10 +106,13 @@
             <div class="col-6">
               <label for="estado" class="form-label small mb-1">Estado</label>
               <select class="form-select" id="estado" name="estado" required>
+                <option value="" selected disabled>Selecciona un estado</option>
                 <option value="pendiente">Pendiente</option>
                 <option value="progreso">En progreso</option>
                 <option value="completada">Completada</option>
               </select>
+
+              <div class="invalid-feedback">Debes seleccionar un estado</div>
             </div>
 
             <!-- Prioridad -->
