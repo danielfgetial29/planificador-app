@@ -99,7 +99,7 @@ function iniciarApp() {
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (!form.checkValidity()) {
+    if (!validateTaskForm(form)) {
       form.classList.add("was-validated");
       return;
     }
