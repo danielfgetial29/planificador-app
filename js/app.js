@@ -1,3 +1,5 @@
+import { TaskManager } from "./TaskManager.js ";
+
 const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
 
 // Función para guardar
@@ -78,6 +80,7 @@ function iniciarApp() {
   const descripcion = document.getElementById("descripcion");
   const contador = document.getElementById("contadorDescripcion");
   const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  const taskManager = new TaskManager();
 
   // Contador de caracteres
   descripcion.addEventListener("input", () => {
