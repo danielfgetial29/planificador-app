@@ -1,3 +1,5 @@
+import { iniciarApp } from "./app.js";
+
 async function cargarComponente(id, ruta) {
   const contenedor = document.querySelector(id);
   try {

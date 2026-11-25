@@ -74,7 +74,7 @@ function render() {
     `${tareas.length} ${tareas.length === 1 ? "tarea" : "tareas"}`;
 }
 
-function iniciarApp() {
+export function iniciarApp() {
   const modalEl = document.getElementById("modalTarea");
   const form = document.getElementById("formTarea");
   const descripcion = document.getElementById("descripcion");
