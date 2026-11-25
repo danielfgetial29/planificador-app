@@ -1,3 +1,5 @@
+const ESTADOS = ["pendiente", "progreso", "completada"];
+
 export class TaskManager {
   #tasks = [];
   #nextId = 1;

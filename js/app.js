@@ -1,9 +1,9 @@
 import { TaskManager } from "./TaskManager.js ";
 
-const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+// const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
 
-// Función para guardar
-const guardar = () => localStorage.setItem("tareas", JSON.stringify(tareas));
+// // Función para guardar
+// const guardar = () => localStorage.setItem("tareas", JSON.stringify(tareas));
 
 const COLOR_PRIORIDAD = { baja: "success", media: "warning", alta: "danger" };
 const ESTADOS = ["pendiente", "progreso", "completada"];
@@ -42,19 +42,54 @@ function validateTaskForm(form) {
   return form.checkValidity();
 }
 
-//Crear la tarjeta de las tareas
+// Crear la tarjeta de una tarea
 function crearTarjeta(tarea) {
+  const nombre = escaparHTML(tarea.nombre);
+  const descripcion = escaparHTML(tarea.descripcion);
+  const asignadoA = escaparHTML(tarea.asignadoA);
+  const prioridad = escaparHTML(tarea.prioridad);
+  const fecha = escaparHTML(tarea.fechaDeEntrega);
+
   return `
-    <article class="card shadow-sm rounded-3">
+    <article class="card shadow-sm rounded-3" data-task-id="${tarea.id}">
       <div class="card-body p-3">
-        <h3 class="h6 fw-semibold mb-1">${tarea.titulo}</h3>
-        ${tarea.descripcion ? `<p class="small text-secondary mb-2">${tarea.descripcion}</p>` : ""}
+        <h3 class="h6 fw-semibold mb-1">${nombre}</h3>
+
+        ${
+          descripcion
+            ? `<p class="small text-secondary mb-2">${descripcion}</p>`
+            : ""
+        }
+
+        <p class="small text-secondary mb-2">
+          Asignado a: ${asignadoA}
+        </p>
+
         <div class="d-flex justify-content-between align-items-center">
-          <span class="badge text-bg-${COLOR_PRIORIDAD[tarea.prioridad]} text-capitalize">${tarea.prioridad}</span>
-          <small class="text-secondary">${formatearFecha(tarea.fecha)}</small>
+          <span class="badge text-bg-${COLOR_PRIORIDAD[tarea.prioridad]} text-capitalize">
+            ${prioridad}
+          </span>
+
+          <small class="text-secondary">
+            ${formatearFecha(fecha)}
+          </small>
+        </div>
+
+        <div class="text-end mt-3">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-danger"
+            data-action="delete"
+            data-task-id="${tarea.id}"
+            aria-label="Eliminar tarea ${nombre}"
+          >
+            <i class="bi bi-trash"></i>
+            Eliminar
+          </button>
         </div>
       </div>
-    </article>`;
+    </article>
+  `;
 }
 
 function render() {
