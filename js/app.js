@@ -13,6 +13,33 @@ const formatearFecha = (fecha) =>
     month: "short",
   });
 
+// Validacion directa del formulario
+function validateTaskForm(form) {
+  const camposTexto = [
+    { campo: form.titulo, minimo: 9 },
+    { campo: form.descripcion, minimo: 16 },
+    { campo: form.asignadoA, minimo: 9 },
+  ];
+
+  camposTexto.forEach(({ campo, minimo }) => {
+    const valor = campo.value.trim();
+
+    // limpia una posible validación anterior.
+    campo.setCustomValidity("");
+
+    // se comprueba que no esté vacío.
+    if (valor.length === 0) {
+      campo.setCustomValidity("Este campo es obligatorio.");
+    }
+    // Longitud minima
+    else if (valor.length < minimo) {
+      campo.setCustomValidity(`Debes ingresar al menos ${minimo} caracteres.`);
+    }
+  });
+
+  return form.checkValidity();
+}
+
 //Crear la tarjeta de las tareas
 function crearTarjeta(tarea) {
   return `
