@@ -74,4 +74,18 @@ export function createTaskCard(task) {
     );
     acciones.append(botonCompletar);
   }
+
+  const botonEliminar = crearElemento(
+    "button",
+    `btn btn-sm btn-outline-danger ${CLASE_BTN_ELIMINAR}`,
+    "Eliminar",
+  );
+  botonEliminar.type = "button";
+  botonEliminar.setAttribute("aria-label", `Eliminar tarea ${task.nombre}`);
+  acciones.append(botonEliminar);
+
+  cuerpo.append(nombre, descripcion, asignadoA, estado, pie, acciones);
+  tarjeta.append(cuerpo);
+
+  return tarjeta;
 }
