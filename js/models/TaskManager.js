@@ -23,3 +23,13 @@ function tareaValida(dato) {
     ESTADOS.includes(dato.estado)
   );
 }
+
+export class TaskManager {
+  #task = [];
+  #nexId = 1;
+  #storage;
+
+  constructor(storage = obtenerLocalStorage()) {
+    this.#storage = storage;
+  }
+}
