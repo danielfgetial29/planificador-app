@@ -25,11 +25,25 @@ function tareaValida(dato) {
 }
 
 export class TaskManager {
-  #task = [];
+  #tasks = [];
   #nexId = 1;
   #storage;
 
   constructor(storage = obtenerLocalStorage()) {
     this.#storage = storage;
+  }
+
+  // buscar tarea por su id
+  #findTask(taskId) {
+    let tareaEncontrada = null;
+
+    for (const task of this.#tasks) {
+      if (task.id === taskId) {
+        tareaEncontrada = task;
+        break;
+      }
+    }
+
+    return tareaEncontrada;
   }
 }
