@@ -54,4 +54,23 @@ export function iniciarApp() {
       taskManager.save();
     }
   }
+
+  // Un único listener para todos los botones de las tarjetas
+  tablero.addEventListener("click", (event) => {
+    const botonCompletar = event.target.closest(`.${CLASE_BTN_COMPLETAR}`);
+    const botonEliminar = event.target.closest(`.${CLASE_BTN_ELIMINAR}`);
+    const boton = botonCompletar ?? botonEliminar;
+
+    if (!boton) return; // Se hizo clic en otra cosa
+
+    const tarjeta = boton.closest("[data-task-id]");
+    // El atributo de datos es un String: se convierte a Number.
+    const taskId = Number(tarjeta.dataset.taskId);
+
+    if (botonCompletar) {
+      completarTarea(taskId);
+    } else {
+      eliminarTarea(taskId);
+    }
+  });
 }
