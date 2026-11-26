@@ -108,4 +108,61 @@ export class TaskManager {
     task.asignadoA = responsable;
     return true;
   }
+
+  // ----- Persistencia en localStorage -----
+
+  // Guarda las tareas y el contador de IDs. Devuelve true si se guardó.
+  save() {
+    if (!this.#storage) return false;
+
+    try {
+      // localStorage solo guarda strings: el array se convierte a JSON.
+      this.#storage.setItem(STORAGE_KEYS.tareas, JSON.stringify(this.#tasks));
+      this.#storage.setItem(STORAGE_KEYS.siguienteId, String(this.#nextId));
+      return true;
+    } catch (error) {
+      // Almacenamiento lleno o no disponible: la app sigue funcionando.
+      console.error("No se pudieron guardar las tareas:", error);
+      return false;
+    }
+  }
+  // Carga las tareas y el contador de IDs guardados.
+  // Devuelve true si se cargó algo; si no hay nada guardado, no hace nada.
+  load() {
+    if (!this.#storage) return false;
+
+    try {
+      const guardadas = this.#storage.getItem(STORAGE_KEYS.tareas);
+      if (guardadas === null) return false; // No hay nada guardado
+
+      const datos = JSON.parse(guardadas); // Puede lanzar error si no es JSON
+      if (!Array.isArray(datos)) return false;
+
+      this.#tasks = datos.filter(tareaValida).map(
+        (dato) =>
+          new Task({
+            ...dato,
+            prioridad: PRIORIDADES.includes(dato.prioridad)
+              ? dato.prioridad
+              : "media",
+          }),
+      );
+
+      // Contador: se convierte de string a número. Además se garantiza que
+      // sea mayor que cualquier ID existente para que nunca se repita.
+      const idGuardado = Number(
+        this.#storage.getItem(STORAGE_KEYS.siguienteId),
+      );
+      const idMaximo = this.#tasks.reduce((max, t) => Math.max(max, t.id), 0);
+      this.#nextId =
+        Number.isInteger(idGuardado) && idGuardado > idMaximo
+          ? idGuardado
+          : idMaximo + 1;
+
+      return true;
+    } catch (error) {
+      console.error("No se pudieron cargar las tareas guardadas:", error);
+      return false;
+    }
+  }
 }
