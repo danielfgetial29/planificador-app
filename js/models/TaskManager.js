@@ -76,4 +76,11 @@ export class TaskManager {
 
     return nuevaTarea.toJSON();
   }
+
+  // Elimina una tarea por ID. Devuelve true si existía.
+  deleteTask(taskId) {
+    const cantidadInicial = this.#tasks.length;
+    this.#tasks = this.#tasks.filter((task) => task.id !== taskId);
+    return this.#tasks.length < cantidadInicial;
+  }
 }
