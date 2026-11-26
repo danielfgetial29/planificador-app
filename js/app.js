@@ -22,3 +22,28 @@ function leerFormulario(form) {
     prioridad: form.elements.prioridad.value,
   };
 }
+
+export function iniciarApp() {
+  const modalEl = document.getElementById("modalTarea");
+  const form = document.getElementById("formTarea");
+  const descripcion = document.getElementById("descripcion");
+  const contador = document.getElementById("contadorDescripcion");
+  const tablero = document.querySelector(".tablero"); // contiene las 3 listas
+  const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  const taskManager = new TaskManager();
+
+  // Carga las tareas guardadas
+  taskManager.load();
+
+  // ----- Acciones sobre las tareas -----
+
+  // Marcar una tarea como completada, redibuja el tablero y guarda
+  function completarTarea(taskId) {
+    const tarea = taskManager.findTaskById(taskId);
+    if (!tarea) return;
+
+    taskManager.updateTask(tarea.id, ESTADO_COMPLETADA);
+    renderBoard(taskManager);
+    taskManager.save();
+  }
+}
