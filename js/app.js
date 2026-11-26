@@ -95,4 +95,18 @@ export function iniciarApp() {
   modalEl.addEventListener("shown.bs.modal", () =>
     form.elements.titulo.focus(),
   );
+
+  // Guardar: validar -> agregar al manager -> redibujar -> guardar.
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    if (!validateTaskForm(form)) return; // No se agrega si hay errores
+
+    taskManager.addTask(leerFormulario(form));
+    renderBoard(taskManager);
+    taskManager.save();
+    modal.hide();
+  });
+
+  renderBoard(taskManager);
 }
