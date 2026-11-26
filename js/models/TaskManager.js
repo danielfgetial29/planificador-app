@@ -83,4 +83,29 @@ export class TaskManager {
     this.#tasks = this.#tasks.filter((task) => task.id !== taskId);
     return this.#tasks.length < cantidadInicial;
   }
+
+  // Actualiza el estado de una tarea. Devuelve true si se actualizó.
+  updateTask(taskId, status) {
+    if (!ESTADOS.includes(status)) return false;
+
+    const task = this.#findTask(taskId);
+    if (!task) return false;
+
+    task.estado = status;
+    return true;
+  }
+
+  // Cambia la persona asignada a una tarea.
+  assignTask(taskId, assignee) {
+    const responsable = String(assignee ?? "").trim();
+    if (!responsable) return false;
+
+    const task = this.#findTask(taskId);
+    if (!task) {
+      return false;
+    }
+
+    task.asignadoA = responsable;
+    return true;
+  }
 }
