@@ -46,4 +46,15 @@ export class TaskManager {
 
     return tareaEncontrada;
   }
+
+  // Devuelve una copia palna de la tarea con ese id o null si no existe
+  findByTaskById(taskId) {
+    const task = this.#findTask(taskId);
+    return task ? task.toJSON() : null;
+  }
+
+  // Devuelve todas las tareas
+  getAllTasks() {
+    return this.#tasks.map((task) => task.toJSON());
+  }
 }
