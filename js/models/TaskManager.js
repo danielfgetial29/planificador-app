@@ -26,7 +26,7 @@ function tareaValida(dato) {
 
 export class TaskManager {
   #tasks = [];
-  #nexId = 1;
+  #nextId = 1;
   #storage;
 
   constructor(storage = obtenerLocalStorage()) {
@@ -56,5 +56,24 @@ export class TaskManager {
   // Devuelve todas las tareas
   getAllTasks() {
     return this.#tasks.map((task) => task.toJSON());
+  }
+
+  // Devuelve las tareas que tienen el estado indicado.
+  getTasksWithStatus(status) {
+    return this.#tasks
+      .filter((task) => task.estado === status)
+      .map((task) => task.toJSON());
+  }
+
+  // Agrega una tarea con su id unico
+  addTask(task) {
+    if (!ESTADOS.includes(task.estado)) {
+      throw new Error(`Estado inválido: "${task.estado}"`);
+    }
+
+    const nuevaTarea = new Task({ ...task, id: this.#nextId++ });
+    this.#tasks.push(nuevaTarea);
+
+    return nuevaTarea.toJSON();
   }
 }
