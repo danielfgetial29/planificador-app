@@ -9,3 +9,17 @@ function obtenerLocalStorage() {
     return null;
   }
 }
+
+// Comprobar que los datos leidos tengan forma de tarea
+function tareaValida(dato) {
+  return (
+    dato !== null &&
+    typeof dato === "object" &&
+    Number.isInteger(dato.id) &&
+    typeof dato.nombre === "string" &&
+    typeof dato.descripcion === "string" &&
+    typeof dato.asignadoA === "string" &&
+    typeof dato.fechaDeEntrega === "string" &&
+    ESTADOS.includes(dato.estado)
+  );
+}
