@@ -13,7 +13,7 @@ export class Task {
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.asignadoA = asignadoA;
-    (this, (fechaDeEntrega = fechaDeEntrega));
+    this.fechaDeEntrega = fechaDeEntrega;
     this.estado = estado;
     this.prioridad = prioridad;
   }

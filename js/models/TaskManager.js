@@ -48,7 +48,7 @@ export class TaskManager {
   }
 
   // Devuelve una copia palna de la tarea con ese id o null si no existe
-  findByTaskById(taskId) {
+  findTaskById(taskId) {
     const task = this.#findTask(taskId);
     return task ? task.toJSON() : null;
   }
