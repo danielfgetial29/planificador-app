@@ -51,3 +51,36 @@ function marcarCampo(campo, mensaje) {
     limpiarErrorCampo(campo);
   }
 }
+
+// Quita el error de un campo.
+export function limpiarErrorCampo(campo) {
+  campo.classList.remove("is-invalid");
+  campo.removeAttribute("aria-invalid");
+}
+
+// Quita los errores de todo el formulario (al abrir el modal).
+export function limpiarValidacion(form) {
+  REGLAS.forEach(({ campo }) => limpiarErrorCampo(form.elements[campo]));
+}
+
+// Valida todos los campos del formulario.
+// Devuelve true si todo es válido; false si hay algún error.
+export function validateTaskForm(form) {
+  let esValido = true;
+  let primerInvalido = null;
+
+  REGLAS.forEach(({ campo, validar }) => {
+    const elemento = form.elements[campo];
+    const mensaje = validar(elemento.value);
+
+    marcarCampo(elemento, mensaje);
+
+    if (mensaje) {
+      esValido = false;
+      primerInvalido ??= elemento;
+    }
+  });
+
+  primerInvalido?.focus();
+  return esValido;
+}
