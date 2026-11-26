@@ -59,4 +59,19 @@ export function createTaskCard(task) {
     "div",
     "d-flex justify-content-end gap-2 mt-3",
   );
+
+  // Boton condicional que solo aparee si al tarea no esta completada
+  if (task.estado !== ESTADO_COMPLETADA) {
+    const botonCompletar = crearElemento(
+      "button",
+      `btn btn-sm btn-success ${CLASE_BTN_COMPLETAR}`,
+      "Completar",
+    );
+    botonCompletar.type = "button";
+    botonCompletar.setAttribute(
+      "aria-label",
+      `Marcar como completada la tarea ${task.nombre}`,
+    );
+    acciones.append(botonCompletar);
+  }
 }
