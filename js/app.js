@@ -73,4 +73,26 @@ export function iniciarApp() {
       eliminarTarea(taskId);
     }
   });
+
+  // ----- Formulario -----
+
+  // Contador de caracteres de la descripción.
+  descripcion.addEventListener("input", () => {
+    contador.textContent = `${descripcion.value.length} / ${LIMITE_DESCRIPCION}`;
+  });
+
+  // Quita el error de un campo en cuanto el usuario lo corrige.
+  form.addEventListener("input", (e) => limpiarErrorCampo(e.target));
+
+  // Formulario limpio al abrir y selecciona el estado de la columna
+  modalEl.addEventListener("show.bs.modal", (e) => {
+    form.reset();
+    limpiarValidacion(form);
+    contador.textContent = `0 / ${LIMITE_DESCRIPCION}`;
+    form.elements.estado.value = e.relatedTarget?.dataset.estado || "pendiente";
+  });
+
+  modalEl.addEventListener("shown.bs.modal", () =>
+    form.elements.titulo.focus(),
+  );
 }
