@@ -46,4 +46,12 @@ export function iniciarApp() {
     renderBoard(taskManager);
     taskManager.save();
   }
+
+  // Elimina la tarea del array, redibuja el tablero y guarda.
+  function eliminarTarea(taskId) {
+    if (taskManager.deleteTask(taskId)) {
+      renderBoard(taskManager);
+      taskManager.save();
+    }
+  }
 }
