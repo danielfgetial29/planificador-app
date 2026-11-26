@@ -1,95 +1,112 @@
-const tareas = JSON.parse(localStorage.getItem("tareas")) || [];
+import { ESTADO_COMPLETADA } from "./config/constants.js";
+import { TaskManager } from "./models/TaskManager.js";
+import {
+  validateTaskForm,
+  limpiarErrorCampo,
+  limpiarValidacion,
+} from "./validation/validateTaskForm.js";
+import { CLASE_BTN_COMPLETAR, CLASE_BTN_ELIMINAR } from "./ui/taskCard.js";
+import { renderBoard } from "./ui/board.js";
 
-// Función para guardar
-const guardar = () => localStorage.setItem("tareas", JSON.stringify(tareas));
+const LIMITE_DESCRIPCION = 300;
 
-const COLOR_PRIORIDAD = { baja: "success", media: "warning", alta: "danger" };
-const ESTADOS = ["pendiente", "progreso", "completada"];
-
-// Fecha local
-const formatearFecha = (fecha) =>
-  new Date(`${fecha}T00:00`).toLocaleDateString("es", {
-    day: "numeric",
-    month: "short",
-  });
-
-//Crear la tarjeta de las tareas
-function crearTarjeta(tarea) {
-  return `
-    <article class="card shadow-sm rounded-3">
-      <div class="card-body p-3">
-        <h3 class="h6 fw-semibold mb-1">${tarea.titulo}</h3>
-        ${tarea.descripcion ? `<p class="small text-secondary mb-2">${tarea.descripcion}</p>` : ""}
-        <div class="d-flex justify-content-between align-items-center">
-          <span class="badge text-bg-${COLOR_PRIORIDAD[tarea.prioridad]} text-capitalize">${tarea.prioridad}</span>
-          <small class="text-secondary">${formatearFecha(tarea.fecha)}</small>
-        </div>
-      </div>
-    </article>`;
+// Lee los valores del formulario y arma el objeto de la tarea (sin id:
+// el id lo genera TaskManager).
+function leerFormulario(form) {
+  return {
+    nombre: form.elements.titulo.value.trim(),
+    descripcion: form.elements.descripcion.value.trim(),
+    asignadoA: form.elements.asignadoA.value.trim(),
+    fechaDeEntrega: form.elements.fecha.value,
+    estado: form.elements.estado.value,
+    prioridad: form.elements.prioridad.value,
+  };
 }
 
-function render() {
-  ESTADOS.forEach((estado) => {
-    const lista = document.querySelector(`[data-lista="${estado}"]`);
-    const delEstado = tareas.filter((t) => t.estado === estado);
-
-    lista.innerHTML = delEstado.length
-      ? delEstado.map(crearTarjeta).join("")
-      : '<p class="text-center text-secondary my-4">Sin tareas</p>';
-
-    document.querySelector(`[data-contador="${estado}"]`).textContent =
-      delEstado.length;
-  });
-
-  document.getElementById("contador-tareas").textContent =
-    `${tareas.length} ${tareas.length === 1 ? "tarea" : "tareas"}`;
-}
-
-function iniciarApp() {
+export function iniciarApp() {
   const modalEl = document.getElementById("modalTarea");
   const form = document.getElementById("formTarea");
   const descripcion = document.getElementById("descripcion");
   const contador = document.getElementById("contadorDescripcion");
+  const tablero = document.querySelector(".tablero"); // contiene las 3 listas
   const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+  const taskManager = new TaskManager();
 
-  // Contador de caracteres
-  descripcion.addEventListener("input", () => {
-    contador.textContent = `${descripcion.value.length} / 300`;
+  // Carga las tareas guardadas
+  taskManager.load();
+
+  // ----- Acciones sobre las tareas -----
+
+  // Marcar una tarea como completada, redibuja el tablero y guarda
+  function completarTarea(taskId) {
+    const tarea = taskManager.findTaskById(taskId);
+    if (!tarea) return;
+
+    taskManager.updateTask(tarea.id, ESTADO_COMPLETADA);
+    renderBoard(taskManager);
+    taskManager.save();
+  }
+
+  // Elimina la tarea del array, redibuja el tablero y guarda.
+  function eliminarTarea(taskId) {
+    if (taskManager.deleteTask(taskId)) {
+      renderBoard(taskManager);
+      taskManager.save();
+    }
+  }
+
+  // Un único listener para todos los botones de las tarjetas
+  tablero.addEventListener("click", (event) => {
+    const botonCompletar = event.target.closest(`.${CLASE_BTN_COMPLETAR}`);
+    const botonEliminar = event.target.closest(`.${CLASE_BTN_ELIMINAR}`);
+    const boton = botonCompletar ?? botonEliminar;
+
+    if (!boton) return; // Se hizo clic en otra cosa
+
+    const tarjeta = boton.closest("[data-task-id]");
+    // El atributo de datos es un String: se convierte a Number.
+    const taskId = Number(tarjeta.dataset.taskId);
+
+    if (botonCompletar) {
+      completarTarea(taskId);
+    } else {
+      eliminarTarea(taskId);
+    }
   });
 
-  // Al abrir: limpiar formulario y preseleccionar el estado del botón pulsado
+  // ----- Formulario -----
+
+  // Contador de caracteres de la descripción.
+  descripcion.addEventListener("input", () => {
+    contador.textContent = `${descripcion.value.length} / ${LIMITE_DESCRIPCION}`;
+  });
+
+  // Quita el error de un campo en cuanto el usuario lo corrige.
+  form.addEventListener("input", (e) => limpiarErrorCampo(e.target));
+
+  // Formulario limpio al abrir y selecciona el estado de la columna
   modalEl.addEventListener("show.bs.modal", (e) => {
     form.reset();
-    form.classList.remove("was-validated");
-    contador.textContent = "0 / 300";
-    form.estado.value = e.relatedTarget?.dataset.estado || "pendiente";
+    limpiarValidacion(form);
+    contador.textContent = `0 / ${LIMITE_DESCRIPCION}`;
+    form.elements.estado.value = e.relatedTarget?.dataset.estado || "pendiente";
   });
 
-  // Enfocar el título al terminar de abrir
-  modalEl.addEventListener("shown.bs.modal", () => form.titulo.focus());
+  modalEl.addEventListener("shown.bs.modal", () =>
+    form.elements.titulo.focus(),
+  );
 
-  // Guardar
+  // Guardar: validar -> agregar al manager -> redibujar -> guardar.
   form.addEventListener("submit", (e) => {
     e.preventDefault();
 
-    if (!form.checkValidity()) {
-      form.classList.add("was-validated");
-      return;
-    }
+    if (!validateTaskForm(form)) return; // No se agrega si hay errores
 
-    tareas.push({
-      id: Date.now(),
-      titulo: form.titulo.value.trim(),
-      descripcion: form.descripcion.value.trim(),
-      fecha: form.fecha.value,
-      estado: form.estado.value,
-      prioridad: form.prioridad.value,
-    });
-
-    guardar();
-    render();
+    taskManager.addTask(leerFormulario(form));
+    renderBoard(taskManager);
+    taskManager.save();
     modal.hide();
   });
 
-  render();
+  renderBoard(taskManager);
 }
